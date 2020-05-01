@@ -2,7 +2,7 @@ let canva = null;
 let ctx = null;
 
 let color_functions = {};
-let globals = {};
+let glob = {};
 
 
 $(() => {
@@ -68,7 +68,7 @@ $(() => {
 function get(color, i, j) {
     let val = {};
     try {
-        val.value = color_functions[color](i, j, canva.width, canva.height, globals,
+        val.value = color_functions[color](i, j, canva.width, canva.height, glob,
             color_functions.red, color_functions.green, color_functions.blue, color_functions.alpha);
     } catch (error) {
         val.error = `<strong>Error</strong> computing channel '${color}' at pixel (${i}, ${j}).<br/>\n` +

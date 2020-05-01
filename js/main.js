@@ -47,8 +47,6 @@ $(() => {
 
     setPreset('Rainbow');
 
-    $('textarea').trigger('input');
-
     /* fill in presets in select element */
     for (let preset of PRESETS) {
         $('#presets').append(
@@ -144,7 +142,8 @@ function setPreset(name) {
         if (preset.name === name) {
 
             ['red', 'green', 'blue', 'alpha'].forEach(color => {
-                $('#' + color + '-textarea').text(preset[color]);
+                $('#' + color + '-textarea').text(preset[color])
+                    .trigger('input');
             });
 
             if (preset.hasOwnProperty('preferredSize')) {

@@ -70,6 +70,8 @@ h3, label {
 .code-block {
     border: 1px black solid;
     border-radius: 3px;
+    
+    width: 45%;
 
     margin: 10px 0px;
 }
@@ -86,7 +88,7 @@ h3, label {
     border: none;
     resize: none;
 
-    width: 600px;
+    width: 95%;
     height: 200px;
 
     font-size: 13pt;

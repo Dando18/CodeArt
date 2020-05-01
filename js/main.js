@@ -4,6 +4,7 @@ let ctx = null;
 let color_functions = {};
 let globals = {};
 
+
 $(() => {
 
     canva = document.getElementById('main-img');
@@ -67,9 +68,10 @@ $(() => {
 function get(color, i, j) {
     let val = {};
     try {
-        val.value = color_functions[color](i, j, canva.width, canva.height, globals);
+        val.value = color_functions[color](i, j, canva.width, canva.height, globals,
+            color_functions.red, color_functions.green, color_functions.blue, color_functions.alpha);
     } catch (error) {
-        val.error = `<strong>Error</strong> computing color '${color}' at pixel (${i}, ${j}).<br/>\n` +
+        val.error = `<strong>Error</strong> computing channel '${color}' at pixel (${i}, ${j}).<br/>\n` +
             `<strong>${error.name}</strong>:  ${error.message}`;
     }
     return val;
@@ -127,10 +129,9 @@ function updateFunctions() {
         let text = $('#' + color + '-textarea').val();
 
         try {
-            color_functions[color] = Function('i', 'j', 'width', 'height', 'globals', text);
+            color_functions[color] = Function('i', 'j', 'width', 'height', 'globals', 'red', 'green', 'blue', 'alpha', text);
         } catch (error) {
-            console.log('error on color: ' + color);
-            notice(`<strong>Error</strong> in color ${color}.<br/>` +
+            notice(`<strong>Error</strong> in channel ${color}.<br/>` +
                 `<strong>${error.name}</strong>:  ${error.message}`);
         }
     });

@@ -87,5 +87,16 @@ const PRESETS = [
             width: 1024,
             height: 1024,
         },
-    }
+    },
+    {
+        name: 'Sonar',
+        red: 'return (i + j) % 256;',
+        green: 'return 255 * Math.sin(j * i);',
+        blue: 'return (j * i / 4) % 256;',
+        alpha: 'return 255;',
+        preferredSize: {
+            width: 1024,
+            height: 1024,
+        },
+    },
 ];

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"
+        integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript" src="./js/presets.js"></script>
+
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+
+    <div class="horizontal-container">
+        <canvas id="main-img" width="512" height="512"></canvas>
+
+        <div class="vertical-container" id="settings">
+            <h3>Settings</h3>
+
+            <div class="horizontal-container">
+                <label>Preset</label>
+                <select id="presets">
+                </select>
+            </div>
+
+            <div class="horizontal-container">
+                <label for="width-setting">Width </label>
+                <input name="width" type="number" id="width-input" min="64" max="1024">
+            </div>
+            <div class="horizontal-container">
+                <label for="height-setting">Height</label>
+                <input name="height" type="number" id="height-input" min="64" max="1024">
+            </div>
+            <div>
+                <button class="btn" id="resize-btn">Resize</button>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div id="notice-container" class="center">
+        <span class="notice" id="notice"></span>
+    </div>
+
+    <br />
+
+    <div class="vertical-container">
+
+        <div class="horizontal-container">
+            <div class="code-block">
+                <div class="code-block-text">red(i, j, width, height, globals) {</div>
+                <textarea class="code-block-textarea" id="red-textarea"></textarea>
+                <div class="code-block-text">}</div>
+            </div>
+            <div class="code-block">
+                <div class="code-block-text">green(i, j, width, height, globals) {</div>
+                <textarea class="code-block-textarea" id="green-textarea"></textarea>
+                <div class="code-block-text">}</div>
+            </div>
+        </div>
+
+        <div class="horizontal-container">
+            <div class="code-block">
+                <div class="code-block-text">blue(i, j, width, height, globals) {</div>
+                <textarea class="code-block-textarea" id="blue-textarea"></textarea>
+                <div class="code-block-text">}</div>
+            </div>
+            <div class="code-block">
+                <div class="code-block-text">alpha(i, j, width, height, globals) {</div>
+                <textarea class="code-block-textarea" id="alpha-textarea"></textarea>
+                <div class="code-block-text">}</div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="horizontal-container">
+        <button type="button" id="clear-btn" class="btn" value="Clear">Clear</button>
+        <button type="button" id="color-btn" class="btn" value="Draw">Draw</button>
+    </div>
+
+</body>
+
+</html>

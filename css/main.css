@@ -1,0 +1,141 @@
+/* --- GENERAL --- */
+#main-img {
+    padding-left: 0;
+    padding-right: 0;
+    /*margin-left: auto;
+    margin-right: auto;*/
+    display: block;
+}
+
+.btn {
+    display: block;
+    width: 120px;
+    height: 50px;
+    padding: 10px;
+
+    border-radius: 5pt;
+
+    font-size: 14pt;
+}
+
+.vertical-container {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.horizontal-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+
+    align-content: center;
+}
+
+/* --- SETTINGS --- */
+#settings {
+    border-radius: 3px;
+    border: 1px black solid;
+
+    padding: 10px 50px;
+}
+
+select {
+    width: 160px;
+    height: 30px;
+
+    font-size: 11pt;
+}
+
+input[type="number"] {
+    margin: 10px 0px 10px 0px;
+    padding: 5px;
+
+    height: 30px;
+    border-radius: 5px;
+
+
+    font-size: 12pt;
+}
+
+label {
+    margin: auto auto auto 0px;
+    padding: 5px;
+}
+
+h3, label {
+    font-family: sans-serif;
+}
+
+/* --- CODE BLOCK --- */
+.code-block {
+    border: 1px black solid;
+    border-radius: 3px;
+
+    margin: 10px 0px;
+}
+
+.code-block-text {
+    color: darkgray;
+    font-size: 14pt;
+    font-family: Monaco;
+
+    padding: 8px;
+}
+
+.code-block-textarea {
+    border: none;
+    resize: none;
+
+    width: 600px;
+    height: 200px;
+
+    font-size: 13pt;
+    font-family: Monaco;
+
+    margin: 0px;
+    padding-left: 30px;
+}
+
+.code-block-textarea:focus {
+    outline: none !important;
+}
+
+/* --- NOTICE AND PROGRESS --- */
+#notice-container {
+    display: none;
+    text-align: center;
+
+    background-color: lightgray;
+    border-radius: 4px;
+    border: 1px darkgray dashed;
+
+    margin-bottom: 10px;
+    padding: 10px;
+
+    width: 50%;
+}
+
+.center {
+    margin: auto;
+}
+
+.notice {
+    font-size: 11pt;
+    font-family: sans-serif;
+}
+
+.error-notice > strong {
+    color: red;
+}
+
+.ok-notice > strong {
+    color: green;
+}
+
+.warning-notice > strong {
+    color: orange;
+}
+
+.no-notice {
+    display: none;
+}

@@ -143,7 +143,7 @@ function setPreset(name) {
         if (preset.name === name) {
 
             ['red', 'green', 'blue', 'alpha'].forEach(color => {
-                $('#' + color + '-textarea').text(preset[color])
+                $('#' + color + '-textarea').val(preset[color])
                     .trigger('input');
             });
 

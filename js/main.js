@@ -5,48 +5,18 @@ let color_functions = {};
 let glob = {};
 let param_list = null;
 
+let cur_mode = 'RGBA';
+const MODES = ['RGBA', 'RGB', 'MONO', 'GRAYSCALE', 'HSV'];
 
 $(() => {
 
     canva = document.getElementById('main-img');
     ctx = canva.getContext('2d');
 
-    color_functions.red = (i, j) => { return 255; };
-    color_functions.green = (i, j) => { return 255; };
-    color_functions.blue = (i, j) => { return 255; };
-    color_functions.alpha = (i, j) => { return 255; };
-
-
+    /* render image on click */
     $('#color-btn').on('click', renderImage);
 
-    $('textarea').attr('cols', '10');
-    $(document).delegate('textarea', 'keydown', function (e) {
-        /* from -- https://stackoverflow.com/a/6637396/3769237 */
-        let keyCode = e.keyCode || e.which;
-
-        if (keyCode == 9) {
-            e.preventDefault();
-
-            let start = this.selectionStart;
-            let end = this.selectionEnd;
-
-            $(this).val(
-                $(this).val().substring(0, start) +
-                '  ' +
-                $(this).val().substring(end)
-            );
-
-            this.selectionStart = start + 2;
-            this.selectionEnd = start + 2;
-        }
-    });
-    $('textarea').each(function () {
-        this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
-    }).on('input', function () {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
-    });
-
+    /* begin with Rainbow as preset */
     setPreset('Rainbow');
 
     /* fill in presets in select element */
@@ -58,13 +28,25 @@ $(() => {
         );
     }
     $('#presets').on('change', function () { setPreset(this.value); });
-    $('#presets').val('Rainbow');
+    //$('#presets').val('Rainbow');
 
+    /* custom dimensions setup */
     $('#width-input').val(canva.width);
     $('#height-input').val(canva.height);
     $('#resize-btn').on('click', updateDimensions);
 
+    /* load/save setup */
     setupLoadAndSave();
+
+    /* setup modes */
+    for (let mode of MODES) {
+        $('#modes').append(
+            $('<option></option>')
+                .attr('value', mode)
+                .text(mode)
+        );
+    }
+    $('#modes').on('change', function () { changeMode(this.value); });
 
     /* parameter list */
     param_list = new ParameterList(glob);
@@ -79,8 +61,7 @@ $(() => {
 function get(color, i, j) {
     let val = {};
     try {
-        val.value = color_functions[color](i, j, canva.width, canva.height, glob,
-            color_functions.red, color_functions.green, color_functions.blue, color_functions.alpha);
+        val.value = color_functions[color](i, j, canva.width, canva.height, glob);
     } catch (error) {
         val.error = `<strong>Error</strong> computing channel '${color}' at pixel (${i}, ${j}).<br/>\n` +
             `<strong>${error.name}</strong>:  ${error.message}`;
@@ -111,7 +92,8 @@ function renderImage(updateCode = true) {
     for (let i = 0; i < canva.height; i++) {
         for (let j = 0; j < canva.width; j++) {
 
-            ['red', 'green', 'blue', 'alpha'].forEach((color, offset) => {
+            vals = [];
+            getModeNames(cur_mode).forEach((color, offset) => {
 
                 val = get(color, i, j);
 
@@ -121,13 +103,18 @@ function renderImage(updateCode = true) {
                     return;
                 }
 
-                img_data.data[4 * (i * canva.width + j) + offset] = clamp(val.value);
+                vals.push(val.value);
+
+                //img_data.data[4 * (i * canva.width + j) + offset] = clamp(val.value);
             });
 
             if (should_stop) break;
+
+            valsToRGBA(vals, cur_mode).forEach((v, off) => {
+                img_data.data[4 * (i * canva.width + j) + off] = clamp(v);
+            });
         }
         if (should_stop) break;
-
     };
 
     ctx.putImageData(img_data, 0, 0);
@@ -135,12 +122,12 @@ function renderImage(updateCode = true) {
 
 function updateFunctions() {
 
-    ['red', 'green', 'blue', 'alpha'].forEach(color => {
+    getModeNames(cur_mode).forEach(color => {
 
         let text = $('#' + color + '-textarea').val();
 
         try {
-            color_functions[color] = Function('i', 'j', 'width', 'height', 'globals', 'red', 'green', 'blue', 'alpha', text);
+            color_functions[color] = Function('i', 'j', 'width', 'height', 'globals', text);
         } catch (error) {
             notice(`<strong>Error</strong> in channel ${color}.<br/>` +
                 `<strong>${error.name}</strong>:  ${error.message}`);
@@ -152,25 +139,10 @@ function updateFunctions() {
 function setPreset(name) {
     for (let preset of PRESETS) {
         if (preset.name === name) {
-
-            /*['red', 'green', 'blue', 'alpha'].forEach(color => {
-                $('#' + color + '-textarea').val(preset[color])
-                    .trigger('input');
-            });
-
-            if (preset.hasOwnProperty('preferredSize')) {
-                $('#width-input').val(preset.preferredSize.width);
-                $('#height-input').val(preset.preferredSize.height);
-                updateDimensions(false);
-            }*/
-
             setCodeFromObject(preset);
-
             break;
         }
     }
-
-    renderImage();
 }
 
 function notice(message, type = 'ok') {
@@ -212,7 +184,11 @@ function updateDimensions(redraw = true) {
 }
 
 function setCodeFromObject(obj) {
-    let filter = ['preferredSize', 'parameters'];
+    let filter = ['preferredSize', 'parameters', 'mode'];
+
+    if (obj.hasOwnProperty('mode')) {
+        changeMode(obj.mode);
+    }
 
     for (let key of Object.keys(obj)) {
         if (obj.hasOwnProperty(key) && !filter.includes(key)) {
@@ -276,8 +252,9 @@ function setupLoadAndSave() {
                 height: canva.height,
             },
             parameters: param_list.getSaveInfo(),
+            mode: cur_mode,
         };
-        ['red', 'green', 'blue', 'alpha'].forEach(color => {
+        getModeNames(cur_mode).forEach(color => {
             obj[color] = $('#' + color + '-textarea').val();
         });
 
@@ -314,4 +291,144 @@ function setupLoadAndSave() {
             }, 0);
         }
     });
+}
+
+
+function changeMode(new_mode) {
+    cur_mode = new_mode;
+
+    /* update the UI selector */
+    $('#modes').val(cur_mode);
+
+    setupCodeBlocks(cur_mode);
+}
+
+function getModeNames(mode) {
+    if (mode === 'RGBA') {
+        return ['red', 'green', 'blue', 'alpha'];
+    } else if (mode === 'RGB') {
+        return ['red', 'green', 'blue'];
+    } else if (mode === 'HSV') {
+        return ['hue', 'saturation', 'value'];
+    } else if (mode === 'MONO') {
+        return ['mono'];
+    } else if (mode === 'GRAYSCALE') {
+        return ['grayscale'];
+    }
+}
+
+function setupCodeBlocks(mode) {
+    let main = $('#main-code-block-container');
+
+    let names = getModeNames(mode);
+    let n_horiz = Math.ceil(names.length / 2);
+    let sub_containers = [];
+
+    main.empty();
+
+    for (let i = 0; i < n_horiz; i++) {
+        sub_containers[i] = $('<div></div>').addClass('horizontal-container');
+        main.append(sub_containers[i]);
+    }
+
+    for (let i = 0; i < names.length; i++) {
+        let idx = Math.floor(i / 2);
+        sub_containers[idx].append(newCodeBlock(names[i]));
+    }
+
+    styleCodeBlocks();
+}
+
+function newCodeBlock(name) {
+    return $('<div></div>')
+        .addClass('code-block')
+        .append(
+            $('<div></div>')
+                .addClass('code-block-text')
+                .html(name + '(i, j, width, height, globals) {')
+        )
+        .append(
+            $('<textarea></textarea>')
+                .addClass('code-block-textarea')
+                .attr('id', name + '-textarea')
+        )
+        .append(
+            $('<div></div>')
+                .addClass('code-block-text')
+                .html('}')
+        );
+}
+
+function styleCodeBlocks() {
+    $('textarea').attr('cols', '10');
+    $(document).delegate('textarea', 'keydown', function (e) {
+        /* from -- https://stackoverflow.com/a/6637396/3769237 */
+        let keyCode = e.keyCode || e.which;
+
+        if (keyCode == 9) {
+            e.preventDefault();
+
+            let start = this.selectionStart;
+            let end = this.selectionEnd;
+
+            $(this).val(
+                $(this).val().substring(0, start) +
+                '  ' +
+                $(this).val().substring(end)
+            );
+
+            this.selectionStart = start + 2;
+            this.selectionEnd = start + 2;
+        }
+    });
+    $('textarea').each(function () {
+        this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+    }).on('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+}
+
+function valsToRGBA(vals, mode) {
+
+    if (mode === 'RGBA') {
+        return vals;
+    } else if (mode === 'RGB') {
+        return [vals[0], vals[1], vals[2], 255];
+    } else if (mode === 'HSV') {
+        return hsv2rgba(vals);
+    } else if (mode === 'MONO') {
+        return vals;
+    } else {
+        return vals;
+    }
+}
+
+/* from -- https://stackoverflow.com/a/17243070/3769237 */
+function hsv2rgba(vals) {
+    let r, g, b, i, f, p, q, t;
+
+    h = vals[0] / 360.0;
+    s = vals[1] / 100.0;
+    v = vals[2] / 100.0;
+
+    i = Math.floor(h * 6);
+    f = h * 6 - i;
+    p = v * (1 - s);
+    q = v * (1 - f * s);
+    t = v * (1 - (1 - f) * s);
+    switch (i % 6) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+    }
+    return [
+        Math.round(r * 255),
+        Math.round(g * 255),
+        Math.round(b * 255),
+        255
+    ];
 }

@@ -31,6 +31,12 @@
             </div>
 
             <div class="horizontal-container">
+                <label>Mode</label>
+                <select id="modes">
+                </select>
+            </div>
+
+            <div class="horizontal-container">
                 <label for="width-setting">Width </label>
                 <input name="width" type="number" id="width-input" min="64" max="1024">
             </div>
@@ -89,22 +95,24 @@
 
 
 
-        <br />
 
-        <div class="horizontal-container">
-            <button type="button" id="clear-btn" class="btn" value="Clear">Clear</button>
-            <button type="button" id="color-btn" class="btn" value="Draw">Draw</button>
+    </div>
+
+    <br />
+
+    <div class="horizontal-container">
+        <button type="button" id="clear-btn" class="btn" value="Clear">Clear</button>
+        <button type="button" id="color-btn" class="btn" value="Draw">Draw</button>
+    </div>
+
+    <div id="parameters-container">
+        <h3>Parameters</h3>
+
+        <div id="parameter-list">
+            <!-- PARAMETERS WILL BE ADDED HERE -->
         </div>
 
-        <div id="parameters-container">
-            <h3>Parameters</h3>
-
-            <div id="parameter-list">
-                <!-- PARAMETERS WILL BE ADDED HERE -->
-            </div>
-
-            <button class="btn" id="add-parameter-btn">Add</button>
-        </div>
+        <button class="btn" id="add-parameter-btn">Add</button>
     </div>
 
 </body>

@@ -58,6 +58,37 @@ const PRESETS = [
         },
     },
     {
+        name: 'Simple Mandelbrot',
+        red: 'let x0 = (j / width) * 3 - 2;\n' +
+            'let y0 = ((height-i) / height) * 2.0 - 1.0;\n' +
+            'let x = 0, y = 0, iter = 0, max_iter = 1000;\n' +
+            'while (x*x + y*y <= 4 && iter < max_iter) {\n' +
+            '  let tmp = x*x - y*y + x0;\n' +
+            '  y = 2*x*y + y0;\n' +
+            '  x = tmp;\n' +
+            '  iter += 1;\n' +
+            '}\n' +
+            'let scaled_color = Math.pow((iter / max_iter), 0.25) * 255;\n' +
+            'return scaled_color;\n',
+        green: 'let x0 = (j / width) * 3 - 2;\n' +
+            'let y0 = ((height-i) / height) * 2.0 - 1.0;\n' +
+            'let x = 0, y = 0, iter = 0, max_iter = 1000;\n' +
+            'while (x*x + y*y <= 4 && iter < max_iter) {\n' +
+            '  let tmp = x*x - y*y + x0;\n' +
+            '  y = 2*x*y + y0;\n' +
+            '  x = tmp;\n' +
+            '  iter += 1;\n' +
+            '}\n' +
+            'let scaled_color = Math.pow((iter / max_iter), 0.25) * 255;\n' +
+            'return scaled_color;\n',
+        blue: 'return 255;',
+        alpha: 'return 255;',
+        preferredSize: {
+            width: 1024,
+            height: 1024,
+        },
+    },
+    {
         name: 'Colored Waves',
         red: 'let wavelength = height*2;\n' +
             'let amplitude = 255;\n' +

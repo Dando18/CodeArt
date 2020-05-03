@@ -16,6 +16,8 @@
     border-radius: 5pt;
 
     font-size: 14pt;
+
+    margin: 5px;
 }
 
 .vertical-container {
@@ -64,6 +66,15 @@ label {
 
 h3, label {
     font-family: sans-serif;
+}
+
+#load-save-container {
+    margin-top: 10px;
+    align-content: center;
+}
+
+#upload-file-input {
+    display: none;
 }
 
 /* --- CODE BLOCK --- */

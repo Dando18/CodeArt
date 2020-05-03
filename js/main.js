@@ -63,6 +63,9 @@ $(() => {
     $('#height-input').val(canva.height);
     $('#resize-btn').on('click', updateDimensions);
 
+
+    setupLoadAndSave();
+
 });
 
 function get(color, i, j) {
@@ -162,18 +165,24 @@ function setPreset(name) {
 
 function notice(message, type = 'ok') {
     if (type === 'ok') {
-
+        $('#notice').html(message);
+        $('#notice').removeClass('no-notice error-notice warning-notice');
+        $('#notice').addClass('ok-notice');
+        $('#notice-container').show(100);
     } else if (type === 'error') {
         $('#notice').html(message);
         $('#notice').removeClass('no-notice ok-notice warning-notice');
         $('#notice').addClass('error-notice');
         $('#notice-container').show(100);
     } else if (type === 'warning') {
-
+        $('#notice').html(message);
+        $('#notice').removeClass('no-notice error-notice ok-notice');
+        $('#notice').addClass('warning-notice');
+        $('#notice-container').show(100);
     } else if (type === 'clear') {
+        $('#notice').html('');
         $('#notice').removeClass('ok-notice warning-notice error-notice');
         $('#notice').addClass('no-notice');
-
         $('#notice-container').hide(50);
     }
 }
@@ -190,4 +199,102 @@ function updateDimensions(redraw = true) {
     if (redraw) {
         renderImage(false);
     }
+}
+
+function setCodeFromObject(obj) {
+    let filter = ['preferredSize'];
+
+    for (let key of Object.keys(obj)) {
+        if (obj.hasOwnProperty(key) && !filter.includes(key)) {
+
+            $('#' + key + '-textarea').val(obj[key])
+                .trigger('input');
+
+        }
+    }
+
+    if (Object.hasOwnProperty('preferredSize')) {
+        $('#width-input').val(obj.preferredSize.width);
+        $('#height-input').val(obj.preferredSize.height);
+        updateDimensions(false);
+    }
+
+    renderImage();
+}
+
+function setupLoadAndSave() {
+    /* link upload btn and input form */
+    $('#upload-btn').on('click', function (e) {
+        e.preventDefault();
+        $('#upload-file-input').trigger('click');
+    });
+
+    /* do load */
+    $('#upload-file-input').on('change', function (e) {
+
+        let file = this.files[0];
+        if (file) {
+            let file_reader = new FileReader();
+            file_reader.readAsText(file, 'UTF-8');
+
+            file_reader.onload = function (evt) {
+                notice('<strong>ok</strong> File uploaded successfully', 'ok');
+                setCodeFromObject(JSON.parse(evt.target.result));
+            };
+            file_reader.onerror = function (evt) {
+                notice('<strong>Error</strong> uploading file', 'error');
+            };
+        }
+
+        // reset
+        $(this).val('');
+    });
+
+    /* handle save */
+    $('#save-btn').on('click', function (e) {
+        /* from -- https://stackoverflow.com/a/30832210/3769237 */
+
+        let obj = {
+            preferredSize: {
+                width: canva.width,
+                height: canva.height,
+            },
+        };
+        ['red', 'green', 'blue', 'alpha'].forEach(color => {
+            obj[color] = $('#' + color + '-textarea').val();
+        });
+
+        let file = new Blob([JSON.stringify(obj)], { type: 'json' });
+
+        /* see -- https://stackoverflow.com/a/30458400/3769237 */
+        let timestamp = new Date();
+        let yyyy = timestamp.getFullYear();
+        let mm = timestamp.getMonth() < 9 ? "0" + (timestamp.getMonth() + 1) : (timestamp.getMonth() + 1);
+        let dd = timestamp.getDate() < 10 ? "0" + timestamp.getDate() : timestamp.getDate();
+        let hh = timestamp.getHours() < 10 ? "0" + timestamp.getHours() : timestamp.getHours();
+        let min = timestamp.getMinutes() < 10 ? "0" + timestamp.getMinutes() : timestamp.getMinutes();
+        let ss = timestamp.getSeconds() < 10 ? "0" + timestamp.getSeconds() : timestamp.getSeconds();
+
+        const f_name = 'codeart_save_' +
+            [yyyy, mm, dd, hh, min, ss].join('-') +
+            '.json';
+
+        if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(file, f_name);
+        } else {
+
+            let url = URL.createObjectURL(file);
+            let link = $('<a></a>')
+                .attr('id', '_tmp_download_link')
+                .attr('href', url)
+                .attr('download', f_name)
+                .appendTo('body')
+                .get(0).click();
+
+            setTimeout(function () {
+                $('#_tmp_download_link').remove();
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+    });
 }

@@ -37,8 +37,14 @@
                 <label for="height-setting">Height</label>
                 <input name="height" type="number" id="height-input" min="64" max="1024">
             </div>
-            <div>
+            <div class="vertical-container">
                 <button class="btn" id="resize-btn">Resize</button>
+
+                <div class="horizontal-container" id="load-save-container">
+                    <button class="btn" id="upload-btn">Upload</button>
+                    <input type="file" value="Upload" id="upload-file-input">
+                    <button class="btn" id="save-btn">Save</button>
+                </div>
             </div>
         </div>
     </div>

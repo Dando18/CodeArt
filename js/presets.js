@@ -89,6 +89,17 @@ const PRESETS = [
         },
     },
     {
+        name: "Julia Set",
+        red: "let R = 4, n = 2;\nlet cx = 0.285, cy = 0.0;\n\nlet r0 = 54, r1 = 128;\n\nR = Math.ceil(Math.pow(Math.sqrt(cx*cx + cy*cy) + R, 1/n) + 1);\n\nlet x = (j/width) * (2*R) - R;\nlet y = ((height-i)/height) * (2*R) - R;\n\nlet iter = 0, max_iter = 100;\n\nwhile (x*x + y*y < R*R && iter < max_iter) {\n\n  let tmp = Math.pow(x*x + y*y, n/2) * Math.cos(n * Math.atan2(y, x)) + cx;\n  y = Math.pow(x*x + y*y, n/2) * Math.sin(n * Math.atan2(y, x)) + cy;\n  x = tmp;\n\n  iter += 1;\n}\n\nlet retval = 0;\nif (iter >= max_iter) {\n  retval = 0;\n} else {\n  iter += 2 - Math.log(Math.log(x*x + y*y)) / Math.log(2);\n  let col = (iter / max_iter);\n  col = Math.tanh(n * col) / Math.tanh(n);\n  retval = col;\n}\nglobals.last = retval;\nreturn (retval*r0) + ((1-retval)*r1);",
+        green: "\nlet g0 = 5, g1 = 212;\nreturn (globals.last*g0) + ((1-globals.last)*g1);",
+        blue: "let b0 = 156, b1 = 187;\nreturn (globals.last*b0) + ((1-globals.last)*b1);",
+        alpha: "return 255;",
+        preferredSize: {
+            width: 1024,
+            height: 1024,
+        },
+    },
+    {
         name: 'Colored Waves',
         red: 'let wavelength = height*2;\n' +
             'let amplitude = 255;\n' +

@@ -3,6 +3,7 @@ let ctx = null;
 
 let color_functions = {};
 let glob = {};
+let param_list = null;
 
 
 $(() => {
@@ -63,8 +64,15 @@ $(() => {
     $('#height-input').val(canva.height);
     $('#resize-btn').on('click', updateDimensions);
 
-
     setupLoadAndSave();
+
+    /* parameter list */
+    param_list = new ParameterList(glob);
+    param_list.onUpdate(renderImage);
+
+    $('#add-parameter-btn').on('click', function (e) {
+        param_list.addParam('');
+    });
 
 });
 
@@ -82,6 +90,8 @@ function get(color, i, j) {
 
 function renderImage(updateCode = true) {
     notice('', 'clear');
+
+    console.log(glob);
 
     if (updateCode) {
         updateFunctions();

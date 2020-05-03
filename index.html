@@ -8,6 +8,7 @@
     <script src="https://mdn.github.io/webgl-examples/tutorial/gl-matrix.js"></script>
 
     <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript" src="./js/parameter.js"></script>
     <script type="text/javascript" src="./js/presets.js"></script>
 
     <link rel="stylesheet" href="./css/main.css">
@@ -84,13 +85,26 @@
                 <div class="code-block-text">}</div>
             </div>
         </div>
-    </div>
 
-    <br />
 
-    <div class="horizontal-container">
-        <button type="button" id="clear-btn" class="btn" value="Clear">Clear</button>
-        <button type="button" id="color-btn" class="btn" value="Draw">Draw</button>
+
+
+        <br />
+
+        <div class="horizontal-container">
+            <button type="button" id="clear-btn" class="btn" value="Clear">Clear</button>
+            <button type="button" id="color-btn" class="btn" value="Draw">Draw</button>
+        </div>
+
+        <div id="parameters-container">
+            <h3>Parameters</h3>
+
+            <div id="parameter-list">
+                <!-- PARAMETERS WILL BE ADDED HERE -->
+            </div>
+
+            <button class="btn" id="add-parameter-btn">Add</button>
+        </div>
     </div>
 
 </body>

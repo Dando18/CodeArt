@@ -91,8 +91,6 @@ function get(color, i, j) {
 function renderImage(updateCode = true) {
     notice('', 'clear');
 
-    console.log(glob);
-
     if (updateCode) {
         updateFunctions();
     }
@@ -155,7 +153,7 @@ function setPreset(name) {
     for (let preset of PRESETS) {
         if (preset.name === name) {
 
-            ['red', 'green', 'blue', 'alpha'].forEach(color => {
+            /*['red', 'green', 'blue', 'alpha'].forEach(color => {
                 $('#' + color + '-textarea').val(preset[color])
                     .trigger('input');
             });
@@ -164,7 +162,9 @@ function setPreset(name) {
                 $('#width-input').val(preset.preferredSize.width);
                 $('#height-input').val(preset.preferredSize.height);
                 updateDimensions(false);
-            }
+            }*/
+
+            setCodeFromObject(preset);
 
             break;
         }
@@ -212,7 +212,7 @@ function updateDimensions(redraw = true) {
 }
 
 function setCodeFromObject(obj) {
-    let filter = ['preferredSize'];
+    let filter = ['preferredSize', 'parameters'];
 
     for (let key of Object.keys(obj)) {
         if (obj.hasOwnProperty(key) && !filter.includes(key)) {
@@ -223,10 +223,16 @@ function setCodeFromObject(obj) {
         }
     }
 
-    if (Object.hasOwnProperty('preferredSize')) {
+    if (obj.hasOwnProperty('preferredSize')) {
         $('#width-input').val(obj.preferredSize.width);
         $('#height-input').val(obj.preferredSize.height);
         updateDimensions(false);
+    }
+
+    if (obj.hasOwnProperty('parameters')) {
+        for (let param of obj.parameters) {
+            param_list.addParam(param.name, param.val, param.min, param.max, param.step);
+        }
     }
 
     renderImage();
@@ -269,6 +275,7 @@ function setupLoadAndSave() {
                 width: canva.width,
                 height: canva.height,
             },
+            parameters: param_list.getSaveInfo(),
         };
         ['red', 'green', 'blue', 'alpha'].forEach(color => {
             obj[color] = $('#' + color + '-textarea').val();

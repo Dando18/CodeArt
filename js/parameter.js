@@ -9,7 +9,7 @@ class ParameterList {
         this.params = [];
     }
 
-    addParam(name, min = -1, max = 1, step = 0.1) {
+    addParam(name, val = 0, min = -1, max = 1, step = 0.1) {
         let id = this.params.length;
 
         let param = $('<div></div>')
@@ -26,7 +26,7 @@ class ParameterList {
                         $('<input>')
                             .attr('type', 'text')
                             .attr('id', 'parameter-name-' + id)
-                            .val('var' + id)
+                            .val(name)
                             .on('input', () => { this.valueChange(id) })
                     )
                     .append(
@@ -58,6 +58,7 @@ class ParameterList {
                             .attr('min', min)
                             .attr('max', max)
                             .attr('step', step)
+                            .val(val)
                             .on('change', () => { this.valueChange(id) })
                     )
                     .append($('<label></label>').html('Max: '))
@@ -115,8 +116,8 @@ class ParameterList {
 
     updateAllVars() {
         for (let i = 0; i < this.params.length; i++) {
-            let name = $('#parameter-name-' + id).val();
-            let val = $('#parameter-value-' + id).val();
+            let name = $('#parameter-name-' + i).val();
+            let val = $('#parameter-value-' + i).val();
 
             this.globals[name] = val;
         }
@@ -130,11 +131,11 @@ class ParameterList {
         let arr = [];
 
         for (let i = 0; i < this.params.length; i++) {
-            let name = $('#parameter-name-' + id).val();
-            let val = $('#parameter-value-' + id).val();
-            let min = $('#parameter-min-' + id).val();
-            let max = $('#parameter-max-' + id).val();
-            let step = $('#parameter-step-' + id).val();
+            let name = $('#parameter-name-' + i).val();
+            let val = $('#parameter-value-' + i).val();
+            let min = $('#parameter-min-' + i).val();
+            let max = $('#parameter-max-' + i).val();
+            let step = $('#parameter-step-' + i).val();
 
             arr.push({
                 name: name,

@@ -175,5 +175,50 @@ const PRESETS = [
             },
         ],
     },
-
+    {
+        name: 'Picnic Blanket',
+        red: 'let s = 3 / (i + 99);\n\nlet y = (i + Math.sin((j*j + Math.pow(i-700,2)*5)/100/width) * 35) * s;\n\nlet l = Math.floor( (j + width)*s + y ) % 2;\nlet r = Math.floor( (height*2 - j)*s + y ) % 2;\nreturn (l + r) * 127;',
+        green: 'let s = 3 / (i + 99);\n\nlet y = (i + Math.sin((j*j + Math.pow(i-700,2)*5)/100/width) * 35) * s;\n\nlet l = Math.floor( 5*((j + height)*s + y) ) % 2;\nlet r = Math.floor( 5*((height*2 - j)*s + y) ) % 2;\nreturn (l + r) * 127;',
+        blue: 'let s = 3 / (i + 99);\n\nlet y = (i + Math.sin((j*j + Math.pow(i-700,2)*5)/100/width) * 35) * s;\n\nlet l = Math.floor( 29*((j + height)*s + y) ) % 2;\nlet r = Math.floor( 29*((height*2 - j)*s + y) ) % 2;\nreturn (l + r) * 127;',
+        preferredSize: {
+            width: 1024,
+            height: 1024
+        },
+        parameters: [],
+        mode: 'RGB',
+    },
+    {
+        name: 'Painting',
+        red: 'if (i == 0 && j == 0 ) {\n  globals.rcache = new Array(height);\n  for (let k = 0; k < globals.rcache.length; k++) {\n    globals.rcache[k] = new Array(width);\n    for (let l = 0; l < globals.rcache[k].length; l++)\n      globals.rcache[k][l] = 0;\n  }\n}\n\nif ( globals.rcache[i][j] != 0) {\n  return globals.rcache[i][j];\n} else {\n  if ( Math.random() < params.prob ) {\n    globals.rcache[i][j] = Math.floor(Math.random() * 256);\n    return globals.rcache[i][j];\n  } else {\n    globals.rcache[i][j] = funcs.red(\n      (i + Math.floor(Math.random()*params.rad)+params.c) % height,\n      (j + Math.floor(Math.random()*params.rad)+params.c) % width,\n      width, height, globals, params, funcs\n    );\n    return globals.rcache[i][j];\n  }\n}',
+        green: 'if (i == 0 && j == 0 ) {\n  globals.gcache = new Array(height);\n  for (let k = 0; k < globals.gcache.length; k++) {\n    globals.gcache[k] = new Array(width);\n    for (let l = 0; l < globals.gcache[k].length; l++)\n      globals.gcache[k][l] = 0;\n  }\n}\n\nif ( globals.gcache[i][j] != 0) {\n  return globals.gcache[i][j];\n} else {\n  if ( Math.random() < params.prob ) {\n    globals.gcache[i][j] = Math.floor(Math.random() * 256);\n    return globals.gcache[i][j];\n  } else {\n    globals.gcache[i][j] = funcs.green(\n      (i + Math.floor(Math.random()*params.rad)+params.c) % height,\n      (j + Math.floor(Math.random()*params.rad)+params.c) % width,\n      width, height, globals, params, funcs\n    );\n    return globals.gcache[i][j];\n  }\n}',
+        blue: 'if (i == 0 && j == 0 ) {\n  globals.bcache = new Array(height);\n  for (let k = 0; k < globals.bcache.length; k++) {\n    globals.bcache[k] = new Array(width);\n    for (let l = 0; l < globals.bcache[k].length; l++)\n      globals.bcache[k][l] = 0;\n  }\n}\n\nif ( globals.bcache[i][j] != 0) {\n  return globals.bcache[i][j];\n} else {\n  if ( Math.random() < params.prob ) {\n    globals.bcache[i][j] = Math.floor(Math.random() * 256);\n    return globals.bcache[i][j];\n  } else {\n    globals.bcache[i][j] = funcs.blue(\n      (i + Math.floor(Math.random()*params.rad)+params.c) % height,\n      (j + Math.floor(Math.random()*params.rad)+params.c) % width,\n      width, height, globals, params, funcs\n    );\n    return globals.bcache[i][j];\n  }\n}',
+        preferredSize: {
+            width: 1024,
+            height: 1024
+        },
+        parameters: [
+            {
+                name: 'prob',
+                val: '0.01',
+                min: '0',
+                max: '1',
+                step: '0.01'
+            },
+            {
+                name: 'rad',
+                val: '5',
+                min: '2',
+                max: '10',
+                step: '1'
+            },
+            {
+                name: 'c',
+                val: '1020',
+                min: '0',
+                max: '1024',
+                step: '10'
+            },
+        ],
+        mode: 'RGB',
+    },
 ];

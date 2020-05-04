@@ -402,6 +402,9 @@ function valsToRGBA(vals, mode) {
         return hsv2rgba(vals);
     } else if (mode === 'MONO') {
         return vals;
+
+    } else if (mode === 'GRAYSCALE') {
+
     } else {
         return vals;
     }

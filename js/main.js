@@ -45,7 +45,7 @@ $(() => {
     $('#modes').on('change', function () { changeMode(this.value); });
 
     /* parameter list */
-    param_list = new ParameterList(glob);
+    param_list = new ParameterList();
     param_list.onUpdate(renderImage);
 
     $('#add-parameter-btn').on('click', function (e) {
@@ -64,7 +64,7 @@ $(() => {
 function get(color, i, j) {
     let val = {};
     try {
-        val.value = color_functions[color](i, j, canva.width, canva.height, glob);
+        val.value = color_functions[color](i, j, canva.width, canva.height, glob, param_list.params);
     } catch (error) {
         val.error = `<strong>Error</strong> computing channel '${color}' at pixel (${i}, ${j}).<br/>\n` +
             `<strong>${error.name}</strong>:  ${error.message}`;
@@ -128,7 +128,7 @@ function updateFunctions() {
         let text = $('#' + color + '-textarea').val();
 
         try {
-            color_functions[color] = Function('i', 'j', 'width', 'height', 'globals', text);
+            color_functions[color] = Function('i', 'j', 'width', 'height', 'globals', 'params', text);
         } catch (error) {
             notice(`<strong>Error</strong> in channel ${color}.<br/>` +
                 `<strong>${error.name}</strong>:  ${error.message}`);
@@ -348,7 +348,7 @@ function newCodeBlock(name) {
         .append(
             $('<div></div>')
                 .addClass('code-block-text')
-                .html(name + '(i, j, width, height, globals) {')
+                .html(name + '(i, j, width, height, globals, params) {')
         )
         .append(
             $('<textarea></textarea>')

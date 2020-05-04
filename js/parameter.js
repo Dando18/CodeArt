@@ -1,16 +1,16 @@
 
 
 class ParameterList {
-    constructor(globals) {
-        this.globals = globals;
-
+    constructor() {
         this.param_list_elem = $('#parameter-list');
 
-        this.params = [];
+        this.params_list = [];
+
+        this.params = {};
     }
 
     addParam(name, val = 0, min = -1, max = 1, step = 0.1) {
-        let id = this.params.length;
+        let id = this.params_list.length;
 
         let param = $('<div></div>')
             .addClass('parameter vertical-container')
@@ -27,7 +27,7 @@ class ParameterList {
                             .attr('type', 'text')
                             .attr('id', 'parameter-name-' + id)
                             .val(name)
-                            .on('input', () => { this.valueChange(id) })
+                            .on('input', () => { this.valueChange(id, false) })
                     )
                     .append(
                         $('<strong></strong>')
@@ -60,6 +60,7 @@ class ParameterList {
                             .attr('step', step)
                             .val(val)
                             .on('change', () => { this.valueChange(id) })
+                            .on('input', () => { this.updateValueLabel(id) })
                     )
                     .append($('<label></label>').html('Max: '))
                     .append(
@@ -83,12 +84,12 @@ class ParameterList {
 
         $(this.param_list_elem).append($(param));
 
-        this.params.push(param);
+        this.params_list.push(param);
 
-        this.valueChange(id);
+        this.valueChange(id, false);
     }
 
-    valueChange(id) {
+    valueChange(id, redraw = true) {
         /* get the name of this variable */
         let varName = $('#parameter-name-' + id).val();
 
@@ -96,11 +97,16 @@ class ParameterList {
 
         let val = $('#parameter-value-' + id).val();
         $('#parameter-value-label-' + id).text(val);
-        this.globals[varName] = val;
 
-        if (this.update_func) {
+        this.updateAllVars();
+
+        if (redraw && this.update_func) {
             this.update_func();
         }
+    }
+
+    updateValueLabel(id) {
+        $('#parameter-value-label-' + id).text($('#parameter-value-' + id).val());
     }
 
     updateRange(id) {
@@ -115,12 +121,17 @@ class ParameterList {
     }
 
     updateAllVars() {
-        for (let i = 0; i < this.params.length; i++) {
+        this.params = {};
+        for (let i = 0; i < this.params_list.length; i++) {
             let name = $('#parameter-name-' + i).val();
             let val = $('#parameter-value-' + i).val();
 
-            this.globals[name] = val;
+            this.params[name] = Number(val);
         }
+    }
+
+    getParams() {
+        return this.params;
     }
 
     onUpdate(func) {
@@ -130,7 +141,7 @@ class ParameterList {
     getSaveInfo() {
         let arr = [];
 
-        for (let i = 0; i < this.params.length; i++) {
+        for (let i = 0; i < this.params_list.length; i++) {
             let name = $('#parameter-name-' + i).val();
             let val = $('#parameter-value-' + i).val();
             let min = $('#parameter-min-' + i).val();

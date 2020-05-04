@@ -64,7 +64,7 @@ $(() => {
 function get(color, i, j) {
     let val = {};
     try {
-        val.value = color_functions[color](i, j, canva.width, canva.height, glob, param_list.params);
+        val.value = color_functions[color](i, j, canva.width, canva.height, glob, param_list.params, color_functions);
     } catch (error) {
         val.error = `<strong>Error</strong> computing channel '${color}' at pixel (${i}, ${j}).<br/>\n` +
             `<strong>${error.name}</strong>:  ${error.message}`;
@@ -128,7 +128,7 @@ function updateFunctions() {
         let text = $('#' + color + '-textarea').val();
 
         try {
-            color_functions[color] = Function('i', 'j', 'width', 'height', 'globals', 'params', text);
+            color_functions[color] = Function('i', 'j', 'width', 'height', 'globals', 'params', 'funcs', text);
         } catch (error) {
             notice(`<strong>Error</strong> in channel ${color}.<br/>` +
                 `<strong>${error.name}</strong>:  ${error.message}`);

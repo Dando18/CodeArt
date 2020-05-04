@@ -155,4 +155,18 @@ const PRESETS = [
         },
         mode: 'RGB',
     },
+    {
+        name: 'Eye Sore',
+        red: 'let r = 10.0, disp = 30.0, offset = 3;\nlet x = j - width/2.0, y = height/2.0 - i;\nlet cx = Math.round(x / disp) * disp + offset;\nlet cy = Math.round(y / disp) * disp + offset;\n\nlet lhs = (x-cx)*(x-cx) + (y-cy)*(y-cy);\n\nif (lhs <= r*r) {\n  return 255;\n} else {\n  return 0;\n}',
+        green: 'let r = 10.0, disp = 30.0, offset = 3;\nlet x = j - width/2.0, y = height/2.0 - i;\nlet cx = Math.round(x / disp) * disp - offset;\nlet cy = Math.round(y / disp) * disp + offset;\n\nlet lhs = (x-cx)*(x-cx) + (y-cy)*(y-cy);\n\nif (lhs <= r*r) {\n  return 255;\n} else {\n  return 0;\n}',
+        blue: 'let r = 10.0, disp = 30.0, offset = 3;\nlet x = j - width/2.0, y = height/2.0 - i;\nlet cx = Math.round(x / disp) * disp;\nlet cy = Math.round(y / disp) * disp - offset;\n\nlet lhs = (x-cx)*(x-cx) + (y-cy)*(y-cy);\n\nif (lhs <= r*r) {\n  return 255;\n} else {\n  return 0;\n}',
+        alpha: 'return 255;',
+        preferredSize: {
+            width: 512,
+            height: 512
+        },
+        parameters: [],
+        mode: 'RGBA',
+    },
+
 ];

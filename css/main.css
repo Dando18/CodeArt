@@ -176,6 +176,13 @@ h3, label {
     padding: 10px;
 }
 
+.parameter-value-label {
+    font-family: sans-serif;
+    font-size: 14pt;
+
+    padding: 5pt;
+}
+
 .parameter-name {
     font-family: sans-serif;
 }

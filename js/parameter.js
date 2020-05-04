@@ -37,6 +37,7 @@ class ParameterList {
                     .append(
                         $('<span></span>')
                             .attr('id', 'parameter-value-label-' + id)
+                            .addClass('parameter-value-label')
                     )
             )
             .append(

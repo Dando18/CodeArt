@@ -16,9 +16,6 @@ $(() => {
     /* render image on click */
     $('#color-btn').on('click', renderImage);
 
-    /* begin with Rainbow as preset */
-    setPreset('Rainbow');
-
     /* fill in presets in select element */
     for (let preset of PRESETS) {
         $('#presets').append(
@@ -28,7 +25,6 @@ $(() => {
         );
     }
     $('#presets').on('change', function () { setPreset(this.value); });
-    //$('#presets').val('Rainbow');
 
     /* custom dimensions setup */
     $('#width-input').val(canva.width);
@@ -56,6 +52,13 @@ $(() => {
         param_list.addParam('');
     });
 
+    /* begin with Rainbow as preset */
+    let preset = getUrlParameter('preset');
+    if (preset) {
+        setPreset(preset);
+    } else {
+        setPreset('Rainbow');
+    }
 });
 
 function get(color, i, j) {
@@ -104,8 +107,6 @@ function renderImage(updateCode = true) {
                 }
 
                 vals.push(val.value);
-
-                //img_data.data[4 * (i * canva.width + j) + offset] = clamp(val.value);
             });
 
             if (should_stop) break;
@@ -139,6 +140,8 @@ function updateFunctions() {
 function setPreset(name) {
     for (let preset of PRESETS) {
         if (preset.name === name) {
+            $('#presets').val(name);
+
             setCodeFromObject(preset);
             break;
         }
@@ -432,3 +435,19 @@ function hsv2rgba(vals) {
         255
     ];
 }
+
+/* from -- https://stackoverflow.com/a/21903119/3769237 */
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+};

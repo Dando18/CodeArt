@@ -223,14 +223,38 @@ const PRESETS = [
     },
     {
         name: 'Smileys',
-        red: "return (funcs.blue(i, j, width, height, globals) != 0) ? ((j / 28)*15 + (i / 28)*15) : 0;",
-        green: "return (funcs.blue(i, j, width, height, globals) != 0) ? ((j / 28)*32 + (i / 28)*10) : 0;",
+        red: 'return (funcs.blue(i, j, width, height, globals) != 0) ? ((j / 28)*15 + (i / 28)*15) : 0;',
+        green: 'return (funcs.blue(i, j, width, height, globals) != 0) ? ((j / 28)*32 + (i / 28)*10) : 0;',
         blue: "if (i == 0 && j == 0) {\n  globals.buf = [0, \n          BigInt('0xFFE000FFF00000F8'),\nBigInt('0x7FFFF007FFFF007F'), BigInt('0x80FDFBF80FFFFF00'), BigInt('0xFF81FDFBF80F9F9F'), BigInt('0xFFFFC3FFFFFC1FFF'), BigInt('0x3FFFFFC3FFFFFC3F'), BigInt('0x781EFFF783FFFFF8'), BigInt('0xFFF00F3FCF80E7FE'), BigInt('0x7F0FF007E43F00FD'), BigInt('0x3FC0001FFF800'),\n0x1F00,0];\n\n}\n\nlet x = j % 28;\nlet y = i % 28;\n\nlet b = y*28 + x;\n\nlet l = globals.buf[Math.floor(b / 64)];\nlet r = ( Math.pow(2, b % 64) );\nreturn (BigInt(l) & BigInt(r)) ? 128 : 0;",
         preferredSize: {
             width: 1024,
             height: 1024,
         },
         parameters: [],
-        mode: "RGB",
-    }
+        mode: 'RGB',
+    },
+    {
+        name: 'Heart',
+        red: 'let min = -4, max = 4;\nlet x = (j / width) * (max-min) + min;\nlet y = ((height-i)/height) * (max-min) + min;\n\nlet r = Math.sqrt(x*x + y*y);\nlet cos_t = (x/r), sin_t = (y/r);\n\nlet rhs = 2 - 2*sin_t + sin_t*(Math.sqrt(Math.abs(cos_t)) / (sin_t + 1.4));\n\nreturn (r < rhs) ? 255 : 0;',
+        green: 'return 0;',
+        blue: 'return 0;',
+        preferredSize: {
+            width: 512,
+            height: 512
+        },
+        parameters: [],
+        mode: 'RGB',
+    },
+    {
+        name: 'Hearts',
+        red: 'let min = -32, max = 32;\nlet x = (j / width) * (max-min) + min;\nlet y = ((height-i)/height) * (max-min) + min;\n\nlet disp = 8;\nlet cx = Math.round(x / disp) * disp;\nlet cy = Math.round(y / disp) * disp;\n\nlet r = Math.sqrt((x-cx)*(x-cx) + (y-cy)*(y-cy));\nlet cos_t = ((x-cx)/r), sin_t = ((y-cy)/r);\n\nlet rhs = 2 - 2*sin_t + sin_t*(Math.sqrt(Math.abs(cos_t)) / (sin_t + 1.4));\n\nreturn (r < rhs) ? 255 : 0;',
+        green: 'return 0;',
+        blue: 'let min = -32, max = 32;\nlet x = (j / width) * (max-min) + min + 1.25;\nlet y = ((height-i)/height) * (max-min) + min - 1.25;\n\nlet disp = 8;\nlet cx = Math.round(x / disp) * disp;\nlet cy = Math.round(y / disp) * disp;\n\nlet r = Math.sqrt((x-cx)*(x-cx) + (y-cy)*(y-cy));\nlet cos_t = ((x-cx)/r), sin_t = ((y-cy)/r);\n\nlet rhs = 2 - 2*sin_t + sin_t*(Math.sqrt(Math.abs(cos_t)) / (sin_t + 1.4));\n\nreturn (r < rhs) ? 255 : 0;',
+        preferredSize: {
+            'width': 512,
+            'height': 512
+        },
+        parameters: [],
+        mode: 'RGB',
+    },
 ];

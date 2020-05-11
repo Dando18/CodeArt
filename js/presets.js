@@ -257,4 +257,16 @@ const PRESETS = [
         parameters: [],
         mode: 'RGB',
     },
+    {
+        name: 'Sierpinski',
+        red: 'let x = j;\nlet y = i;\n\nlet wh = 255 - (( (width-x) & (height-y) ) * 128);\n\nreturn (255 - ((x & y) * 128)) & wh',
+        green: 'let x = width-j;\nlet y = i;\n\nlet wh = 255 - (( (x) & (height-y) ) * 128);\n\nreturn (255 - ((x & y) * 128)) & wh;',
+        blue: 'let x = j;\nlet y = height-i;\n\nlet wh = 255 - (( (width-x) & (y) ) * 128);\n\nreturn (255 - ((x & y) * 128)) & wh;',
+        preferredSize: {
+            width: 1024,
+            height: 1024,
+        },
+        parameters: [],
+        mode: 'RGB',
+    }
 ];

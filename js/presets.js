@@ -268,5 +268,17 @@ const PRESETS = [
         },
         parameters: [],
         mode: 'RGB',
+    },
+    {
+        name: 'Cross',
+        red: 'let inCross = ((i > height/4) && (i < 2*height/5) && (j > width/8) && (j < 7*width/8)) || ((j > 2.1*height/5) && (j < 2.9*height/5));\n\nlet distFromSun = Math.sqrt((i*i) + (j-width)*(j-width));\nlet inSun = (distFromSun < 75);\nlet diagonal = Math.sqrt((width*width)+(height*height));\nlet tintScale = distFromSun / diagonal;\nlet tint = 60 * tintScale;\n\nlet gx = width/2-75, gy = height+550, gr = width*1.2;\nlet inGround = (Math.sqrt((i-gy)*(i-gy) + (j-gx)*(j-gx)) <= gr);\n\nlet retval = 0;\nif (inGround) {\n  retval = 0;\n} else if (inCross) {\n  retval = 139;\n} else if (inSun) {\n  retval = 255;\n} else {\n  retval = 135;\n}\nreturn retval - tint;',
+        green: 'let inCross = ((i > height/4) && (i < 2*height/5) && (j > width/8) && (j < 7*width/8)) || ((j > 2.1*height/5) && (j < 2.9*height/5));\n\nlet distFromSun = Math.sqrt((i*i) + (j-width)*(j-width));\nlet inSun = (distFromSun < 75);\nlet diagonal = Math.sqrt((width*width)+(height*height));\nlet tintScale = distFromSun / diagonal;\nlet tint = 60 * tintScale;\n\nlet gx = width/2-75, gy = height+550, gr = width*1.2;\nlet inGround = (Math.sqrt((i-gy)*(i-gy) + (j-gx)*(j-gx)) <= gr);\n\nlet retval = 0;\nif (inGround) {\n  retval = 255;\n} else if (inCross) {\n  retval = 69;\n} else if (inSun) {\n  retval = 255;\n} else {\n  retval = 206;\n}\nreturn retval - tint;',
+        blue: 'let inCross = ((i > height/4) && (i < 2*height/5) && (j > width/8) && (j < 7*width/8)) || ((j > 2.1*height/5) && (j < 2.9*height/5));\n\nlet distFromSun = Math.sqrt((i*i) + (j-width)*(j-width));\nlet inSun = (distFromSun < 75);\nlet diagonal = Math.sqrt((width*width)+(height*height));\nlet tintScale = distFromSun / diagonal;\nlet tint = 60 * tintScale;\n\nlet gx = width/2-75, gy = height+550, gr = width*1.2;\nlet inGround = (Math.sqrt((i-gy)*(i-gy) + (j-gx)*(j-gx)) <= gr);\n\nlet retval = 0;\nif (inGround) {\n  retval = 0;\n} else if (inCross) {\n  retval = 19;\n} else if (inSun) {\n  retval = 0;\n} else {\n  retval = 235;\n}\nreturn retval - tint;',
+        preferredSize: {
+            width: 512,
+            height: 512
+        },
+        parameters: [],
+        mode: 'RGB',
     }
 ];

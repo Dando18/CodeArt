@@ -9,7 +9,11 @@ class ParameterList {
         this.params = {};
     }
 
-    removeParam(id) {
+    removeParam(btn) {
+        const btnId = btn.target.id;
+        const parts = btnId.split('-');
+        const id = parseInt(parts[parts.length - 1]);
+
         console.log(`removing ${id}`);
 
         $(this.params_list[id]).remove();
@@ -68,7 +72,7 @@ class ParameterList {
                             .attr('type', 'button')
                             .attr('id', 'parameter-delete-btn-' + id)
                             .text('Delete')
-                            .on('click', () => { this.removeParam(id) })
+                            .on('click', (e) => { this.removeParam(e) })
                     )
             )
             .append(

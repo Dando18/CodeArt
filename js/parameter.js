@@ -9,6 +9,29 @@ class ParameterList {
         this.params = {};
     }
 
+    removeParam(id) {
+        console.log(`removing ${id}`);
+
+        $(this.params_list[id]).remove();
+
+        this.params_list.splice(id, 1);
+
+        for (let i = id; i < this.params_list.length; i++) {
+            this.reindexParam(i + 1, i);
+        }
+    }
+
+    reindexParam(oldIdx, newIdx) {
+        console.log(`moving ${oldIdx} to ${newIdx}`);
+
+        /* element sits at newIdx */
+        ['container', 'name', 'value-label', 'delete-btn', 'min', 'value', 'max', 'step'].forEach(val => {
+
+            $('#parameter-' + val + '-' + oldIdx).attr('id', 'parameter-' + val + '-' + newIdx);
+
+        });
+    }
+
     addParam(name, val = 0, min = -1, max = 1, step = 0.1) {
         let id = this.params_list.length;
 
@@ -38,6 +61,14 @@ class ParameterList {
                         $('<span></span>')
                             .attr('id', 'parameter-value-label-' + id)
                             .addClass('parameter-value-label')
+                    )
+                    .append(
+                        $('<button></button>')
+                            .addClass('btn delete-btn')
+                            .attr('type', 'button')
+                            .attr('id', 'parameter-delete-btn-' + id)
+                            .text('Delete')
+                            .on('click', () => { this.removeParam(id) })
                     )
             )
             .append(

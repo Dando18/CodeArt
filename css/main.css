@@ -201,3 +201,10 @@ input[type="text"] {
     margin: 5px;
     padding: 3px;
 }
+
+.delete-btn {
+    float: right;
+
+    background-color: red;
+    color: white;
+}

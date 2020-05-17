@@ -6,7 +6,7 @@ let glob = {};
 let param_list = null;
 
 let cur_mode = 'RGBA';
-const MODES = ['RGBA', 'RGB', 'MONO', 'GRAYSCALE', 'HSV', 'CMYK'];
+const MODES = ['RGBA', 'RGB', 'MONO', 'GRAYSCALE', 'HSV', 'HSL', 'CMYK'];
 
 $(() => {
 
@@ -313,6 +313,8 @@ function getModeNames(mode) {
         return ['red', 'green', 'blue'];
     } else if (mode === 'HSV') {
         return ['hue', 'saturation', 'value'];
+    } else if (mode === 'HSL') {
+        return ['hue', 'saturation', 'lightness'];
     } else if (mode === 'MONO') {
         return ['mono'];
     } else if (mode === 'GRAYSCALE') {
@@ -402,6 +404,8 @@ function valsToRGBA(vals, mode) {
         return [vals[0], vals[1], vals[2], 255];
     } else if (mode === 'HSV') {
         return hsv2rgba(vals);
+    } else if (mode === 'HSL') {
+        return hsl2rgba(vals);
     } else if (mode === 'MONO') {
         /* expect that vals is [[r, g, b, a]] */
         return vals[0];
@@ -441,6 +445,28 @@ function hsv2rgba(vals) {
         Math.round(b * 255),
         255
     ];
+}
+
+function hsl2hsv(vals) {
+    let h = vals[0], s = vals[1], l = vals[2];
+    let newH = 0, newS = 0, newV = 0;
+
+    h /= 360.0;
+    s /= 100.0;
+    l /= 100.0;
+
+    l *= 2;
+    s *= (l <= 1) ? l : 2 - l;
+
+    newH = h;
+    newV = (l + s) / 2;
+    newS = (2 * s) / (l + s);
+
+    return [newH * 360, newS * 100, newV * 100];
+}
+
+function hsl2rgba(vals) {
+    return hsv2rgba(hsl2hsv(vals));
 }
 
 function grayscale2rgba(vals) {

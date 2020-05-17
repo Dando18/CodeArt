@@ -407,8 +407,14 @@ function valsToRGBA(vals, mode) {
     } else if (mode === 'HSL') {
         return hsl2rgba(vals);
     } else if (mode === 'MONO') {
-        /* expect that vals is [[r, g, b, a]] */
-        return vals[0];
+        /* expect that vals is { mode: '', value: [] } */
+
+        if (vals[0].hasOwnProperty('mode') && vals[0].hasOwnProperty('value') && vals[0].mode != 'MONO') {
+            return valsToRGBA(vals[0].value, vals[0].mode);
+        } else {
+            return [0, 0, 0, 255];
+        }
+
     } else if (mode === 'GRAYSCALE') {
         return grayscale2rgba(vals);
     } else if (mode === 'CMYK') {

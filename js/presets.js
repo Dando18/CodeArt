@@ -292,5 +292,17 @@ const PRESETS = [
         },
         parameters: [],
         mode: 'RGB',
+    },
+    {
+        name: 'Collideascope',
+        hue: 'let x = j - width/2, y = height/2 - i;\n\nlet t_rad = Math.atan2(y, x);\nreturn t_rad * 180 / Math.PI + 180;\n',
+        saturation: 'let x = j - width/2, y = height/2 - i;\nlet r = Math.sqrt(x*x + y*y);\nlet maxR = Math.sqrt(width*width + height*height);\n\nr = Math.round(r / 36) * 36;\n\nreturn 100 * (1 - r / maxR);',
+        lightness: 'let x = j - width/2, y = height/2 - i;\n\nlet disp = 30;\nlet cx = Math.round(x / disp) * disp;\nlet cy = Math.round(y / disp) * disp;\n\nreturn (Math.abs(x-cx) + Math.abs(y-cy)) / disp * 100;',
+        preferredSize: {
+            width: 512,
+            height: 512
+        },
+        parameters: [],
+        mode: 'HSL',
     }
 ];

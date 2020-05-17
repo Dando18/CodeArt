@@ -404,8 +404,7 @@ function valsToRGBA(vals, mode) {
         /* expect that vals is [[r, g, b, a]] */
         return vals[0];
     } else if (mode === 'GRAYSCALE') {
-        /* TODO */
-        return vals;
+        return grayscale2rgba(vals);
     } else {
         return vals;
     }
@@ -438,6 +437,10 @@ function hsv2rgba(vals) {
         Math.round(b * 255),
         255
     ];
+}
+
+function grayscale2rgba(vals) {
+    return [vals[0], vals[0], vals[0], 255];
 }
 
 /* from -- https://stackoverflow.com/a/21903119/3769237 */

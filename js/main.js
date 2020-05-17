@@ -401,10 +401,11 @@ function valsToRGBA(vals, mode) {
     } else if (mode === 'HSV') {
         return hsv2rgba(vals);
     } else if (mode === 'MONO') {
-        return vals;
-
+        /* expect that vals is [[r, g, b, a]] */
+        return vals[0];
     } else if (mode === 'GRAYSCALE') {
-
+        /* TODO */
+        return vals;
     } else {
         return vals;
     }

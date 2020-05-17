@@ -14,8 +14,6 @@ class ParameterList {
         const parts = btnId.split('-');
         const id = parseInt(parts[parts.length - 1]);
 
-        console.log(`removing ${id}`);
-
         $(this.params_list[id]).remove();
 
         this.params_list.splice(id, 1);
@@ -26,8 +24,6 @@ class ParameterList {
     }
 
     reindexParam(oldIdx, newIdx) {
-        console.log(`moving ${oldIdx} to ${newIdx}`);
-
         /* element sits at newIdx */
         ['container', 'name', 'value-label', 'delete-btn', 'min', 'value', 'max', 'step'].forEach(val => {
 

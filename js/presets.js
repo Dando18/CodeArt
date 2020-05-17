@@ -104,7 +104,7 @@ const PRESETS = [
     },
     {
         name: 'Simple Mandelbrot (HSV)',
-        hue: 'let x0 = (j / width) * 3 - 2;\nlet y0 = ((height-i) / height) * 2.0 - 1.0;\nlet x = 0, y = 0, iter = 0, max_iter = 100;\n\nwhile (x*x + y*y <= 4 && iter < max_iter) {\n  let tmp = x*x - y*y + x0;\n  y = 2*x*y + y0;\n  x = tmp;\n  iter += 1;\n}\n\nif (iter >= max_iter) {\n  iter = max_iter;\n} else {\n  iter += 2 - Math.log(Math.log(x*x + y*y)) / Math.log(2);\n}\nglobals.value = (iter < max_iter) ? 100 : 0;\nreturn 255 * (iter / max_iter);\n',
+        hue: 'let x0 = (j / width) * 3 - 2;\nlet y0 = ((height-i) / height) * 2.0 - 1.0;\nlet x = 0, y = 0, iter = 0, max_iter = 100;\n\nwhile (x*x + y*y <= 4 && iter < max_iter) {\n  let tmp = x*x - y*y + x0;\n  y = 2*x*y + y0;\n  x = tmp;\n  iter += 1;\n}\n\nif (iter >= max_iter) {\n  iter = max_iter;\n} else {\n  iter += 2 - Math.log(Math.log(x*x + y*y)) / Math.log(2);\n}\nglobals.value = (iter < max_iter) ? 100 : 0;\nreturn 360 * (iter / max_iter);\n',
         saturation: 'return 100;',
         value: 'return globals.value;',
         preferredSize: {

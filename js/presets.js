@@ -12,6 +12,18 @@ const PRESETS = [
         mode: 'RGBA',
     },
     {
+        name: 'Rainbow (HSL)',
+        hue: 'return (i + j) % 360;',
+        saturation: 'return (i + j) / (width + height) * 100;',
+        lightness: 'let cx = (width / 2);\nlet cy = (height / 2);\nlet dist = Math.sqrt((i-cy)*(i-cy)+(j-cx)*(j-cx));\nlet maxDist = Math.sqrt(width*width + height*height) / 2;\n\nreturn 100 * (1 - dist/maxDist);',
+        preferredSize: {
+            width: 512,
+            height: 512
+        },
+        parameters: [],
+        mode: 'HSL',
+    },
+    {
         name: 'Digital Triangles',
         red: 'return j ^ (i-j) ^ i;',
         green: 'return (i - height)^2 + (j - width)^2;',

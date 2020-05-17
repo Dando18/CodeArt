@@ -6,7 +6,7 @@ let glob = {};
 let param_list = null;
 
 let cur_mode = 'RGBA';
-const MODES = ['RGBA', 'RGB', 'MONO', 'GRAYSCALE', 'HSV'];
+const MODES = ['RGBA', 'RGB', 'MONO', 'GRAYSCALE', 'HSV', 'CMYK'];
 
 $(() => {
 
@@ -317,6 +317,8 @@ function getModeNames(mode) {
         return ['mono'];
     } else if (mode === 'GRAYSCALE') {
         return ['grayscale'];
+    } else if (mode === 'CMYK') {
+        return ['cyan', 'magenta', 'yellow', 'black'];
     }
 }
 
@@ -405,6 +407,8 @@ function valsToRGBA(vals, mode) {
         return vals[0];
     } else if (mode === 'GRAYSCALE') {
         return grayscale2rgba(vals);
+    } else if (mode === 'CMYK') {
+        return cmyk2rgba(vals);
     } else {
         return vals;
     }
@@ -441,6 +445,16 @@ function hsv2rgba(vals) {
 
 function grayscale2rgba(vals) {
     return [vals[0], vals[0], vals[0], 255];
+}
+
+/* see -- https://www.rapidtables.com/convert/color/cmyk-to-rgb.html */
+function cmyk2rgba(vals) {
+    return [
+        255 * (1 - vals[0]) * (1 - vals[3]),
+        255 * (1 - vals[1]) * (1 - vals[3]),
+        255 * (1 - vals[2]) * (1 - vals[3]),
+        255
+    ];
 }
 
 /* from -- https://stackoverflow.com/a/21903119/3769237 */

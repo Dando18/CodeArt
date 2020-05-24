@@ -304,5 +304,17 @@ const PRESETS = [
         },
         parameters: [],
         mode: 'HSL',
+    },
+    {
+        name: 'Depth',
+        red: 'let x = j - width/2, y = height/2 - i;\n\nlet radius = 62;\nlet pp = 4;\nlet dispx = width / pp, dispy = height / pp;\nlet cx = Math.round(x / dispx) * dispx;\nlet cy = Math.round(y / dispy) * dispy;\n\nlet lhs = radius*radius;\nlet rhs = (x-cx)*(x-cx) + (y-cy)*(y-cy);\n\nlet offset = 12;\nlet dist = Math.abs(x-offset) + Math.abs(y);\nlet isBand = ((dist > 135) && (dist < 165));\n\nif (lhs < rhs) {\n    if (isBand && x-offset > 0) {\n      return 0;\n    } else {\n      return 255;\n    }\n} else {\n    return 0;\n}',
+        green: 'let x = j - width/2, y = height/2 - i;\n\nlet radius = 84;\nlet pp = 4;\nlet dispx = width / pp, dispy = height / pp;\nlet cx = Math.round(x / dispx) * dispx;\nlet cy = Math.round(y / dispy) * dispy;\n\nlet lhs = radius*radius;\nlet rhs = (x-cx)*(x-cx) + (y-cy)*(y-cy);\n\nif (lhs < rhs) {\n  return 255;\n} else {\n  return 0;\n}',
+        blue: 'let x = j - width/2, y = height/2 - i;\n\nlet radius = 62;\nlet pp = 4;\nlet dispx = width / pp, dispy = height / pp;\nlet cx = Math.round(x / dispx) * dispx;\nlet cy = Math.round(y / dispy) * dispy;\n\nlet lhs = radius*radius;\nlet rhs = (x-cx)*(x-cx) + (y-cy)*(y-cy);\n\nlet isRed = (lhs < rhs);\n\nlet offset = 12;\nlet dist = Math.abs(x-offset) + Math.abs(y);\nlet isBand = ((dist > 135) && (dist < 165));\n\n\nif (isBand) {\n  if (x-offset > 0) {\n    return 255;\n  } else {\n    return (isRed) ? 0 : 255;\n  }\n}',
+        preferredSize: {
+            width: 512,
+            height: 512
+        },
+        parameters: [],
+        mode: 'RGB',
     }
 ];
